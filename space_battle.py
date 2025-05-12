@@ -14,7 +14,7 @@ left_border = Border(0, 0, 10, data.HEIGHT)
 right_border = Border(data.WIDTH - 10, 0, 10, data.HEIGHT)
 
 # Create a vertical center border
-center_border = Border(data.WIDTH // 2 - 5, 0, 10, data.HEIGHT)
+center_border = Border(data.WIDTH // 2, 0, 10, data.HEIGHT)
 
 
 # game window
@@ -25,6 +25,7 @@ def draw_window(red,yellow,RED_HEALTH,YELLOW_HEALTH):
     data.win.blit(data.RED_SHIP,(red.x,red.y))
     RED_HEALTH_TEXT=HEALTH_FONT.render("health: "+str(RED_HEALTH),1,WHITE)
     YELLOW_HEALTH_TEXT=HEALTH_FONT.render("health: "+str(YELLOW_HEALTH),1,WHITE)
+    
     data.win.blit(RED_HEALTH_TEXT,(data.WIDTH-RED_HEALTH_TEXT.get_width()-10,10))
     data.win.blit(YELLOW_HEALTH_TEXT,(10,10))
 
@@ -66,10 +67,10 @@ def ship_yellow_movement(key_pressed,yellow):
         data.jet.play()
 
 def ship_red_movement(key_pressed,red):
-    if key_pressed[pygame.K_j] and red.x - data.speed > 470:  # left
+    if key_pressed[pygame.K_j] and red.x - data.speed > center_border.x:  # left
         red.x -= data.speed
         data.jet.play()
-    if key_pressed[pygame.K_l] and red.x + data.speed < 900-red.width+10:  # right
+    if key_pressed[pygame.K_l] and red.x + data.speed + red.width + 10 < data.WIDTH:  # right
         red.x += data.speed
         data.jet.play()
     if key_pressed[pygame.K_i] and red.y > 0:  # up
@@ -82,13 +83,13 @@ def ship_red_movement(key_pressed,red):
 def firing(key_pressed,yellow,red):
     if key_pressed[K_LCTRL]:
         if len(data.yellow_bullets)<=data.MAX_BULLET:
-            bullet= pygame.Rect(data.yellow.x+data.yellow.width-40,data.yellow.y+30,20,3)
+            bullet= pygame.Rect(data.yellow.x+data.yellow.width,data.yellow.y+data.SPACE_SHIP_HEIGHT//2,20,3)
             data.yellow_bullets.append(bullet)
             data.bullet_fire_sound.play()
 
     if key_pressed[K_RCTRL]:
         if len(data.red_bullets)<=data.MAX_BULLET:
-            bullet= pygame.Rect(data.red.x+10,data.red.y+30,20,3)
+            bullet= pygame.Rect(data.red.x+10 , data.red.y+data.SPACE_SHIP_HEIGHT//2 , 20 , 3 )
             data.red_bullets.append(bullet)
             data.bullet_fire_sound.play()
 
@@ -102,8 +103,8 @@ def DRAW_WINNER(TEXT):
 
 def space_shooting_main():
     global RED_HEALTH,YELLOW_HEALTH
-    data.red=pygame.Rect(700,250,data.SPACE_SHIP_WIDTH,data.SPACE_SHIP_HEIGHT)
-    data.yellow=pygame.Rect(100,250,data.SPACE_SHIP_WIDTH,data.SPACE_SHIP_HEIGHT)
+    data.red=pygame.Rect((3*(data.WIDTH))//4,data.HEIGHT//2-data.SPACE_SHIP_WIDTH//2,data.SPACE_SHIP_WIDTH,data.SPACE_SHIP_HEIGHT)
+    data.yellow=pygame.Rect(data.WIDTH//4,data.HEIGHT//2-data.SPACE_SHIP_WIDTH//2,data.SPACE_SHIP_WIDTH,data.SPACE_SHIP_HEIGHT)
 
     pygame.init()
     pygame.display.set_caption("SPACE FIGHTING GAME")
@@ -163,7 +164,7 @@ def space_shooting_main():
                         data.end_screen_displayed = False
                         data.RED_HEALTH,data.YELLOW_HEALTH=data.MAX_HEALTH,data.MAX_HEALTH
                     elif quit_button.collidepoint(m_x, m_y):
-                        import formatted_main_frame
-                        formatted_main_frame.main_frame_setup()
-# space_shooting_main()   
+                        run = False  # Ensure the game loop exits after quitting
+                        break
+# space_shooting_main()
             

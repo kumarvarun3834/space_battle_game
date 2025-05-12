@@ -35,9 +35,9 @@ def logo_window():
         data.win.blit(text_surface, text_rect)
 
     # Draw buttons
-    draw_button(400,300 , "Start", "start")
-    draw_button(400,350 , "About", "about")
-    draw_button(400,400 , "Quit", "quit")
+    draw_button(data.WIDTH//2-data.BUTTON_WIDTH//2,data.HEIGHT//2 , "Start", "start")
+    draw_button(data.WIDTH//2-data.BUTTON_WIDTH//2,data.HEIGHT//2+data.BUTTON_HEIGHT+data.BUTTON_HEIGHT//2 , "About", "about")
+    draw_button(data.WIDTH//2-data.BUTTON_WIDTH//2,data.HEIGHT//2+2*(data.BUTTON_HEIGHT+data.BUTTON_HEIGHT//2) , "Quit", "quit")
     pygame.display.update()
 
 def LOGO_other_elements():
